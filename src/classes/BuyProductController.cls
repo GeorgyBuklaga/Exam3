@@ -102,9 +102,7 @@ public class BuyProductController {
         if (returnPage == 'ProductList') {
             newocp = new PageReference('/apex/' + returnPage);
         }
-
         newocp.setRedirect(true);
         return newocp;
-
     }
 }

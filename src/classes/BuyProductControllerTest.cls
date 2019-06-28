@@ -55,10 +55,12 @@ public class BuyProductControllerTest {
         Test.startTest();
         PageReference pageRef = Page.BuyProduct;
         pageRef.getParameters().put('id', String.valueOf(prod.Id));
-        pageRef.getParameters().put('returnPage','Product');
+        pageRef.getParameters().put('returnPage','ProductList');
         Test.setCurrentPage(pageRef);
         BuyProductController testController = new BuyProductController();
-        testController.back();
+        PageReference newPage = testController.back();
+        System.assertEquals('/apex/ProductList', newPage.getUrl());
+
         Test.stopTest();
 
     }
