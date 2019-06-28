@@ -1,0 +1,79 @@
+<apex:page controller="BuyProductController" lightningStylesheets="true" docType="html-5.0">
+    <apex:slds />
+    <apex:includeScript value="{! $Resource.jQuery }"/>
+    <apex:form id="form">
+        <apex:outputPanel styleClass="slds-align_absolute-center" layout="block">
+            <br/>
+            <apex:outputText style="color:green" styleClass="slds-text-heading_large" value="{!message}"/>
+            <apex:outputText style="color:red" styleClass="slds-text-heading_large" value="{!errorMessage}"/>
+            <br/>
+        </apex:outputPanel>
+        <apex:outputPanel styleClass="slds-align_-center slds-grid slds-wrap" layout="block">
+
+            <apex:outputPanel styleClass="slds-col slds-size_4-of-12 slds-text-align_center" layout="block">
+                <apex:outputPanel styleClass="slds-m-vertical_x-large" layout="block">
+                    <apex:outputText styleClass="slds-text-heading_medium" value="Contact Information"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="slds-m-bottom_x-small" layout="block">
+                    <apex:outputText styleClass="slds-text-heading_small" value="Email"/>
+                    <apex:input styleClass="slds-input" value="{!email}" type="email"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="slds-m-bottom_x-small" layout="block">
+                    <apex:outputText styleClass="slds-text-heading_small" value="First Name"/>
+                    <apex:inputText styleClass="slds-input" value="{!firstName}"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="slds-m-bottom_x-small" layout="block">
+                    <apex:outputText styleClass="slds-text-heading_small" value="Last Name"/>
+                    <apex:inputText styleClass="slds-input" value="{!lastName}"/>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-col slds-size_2-of-12 slds-text-align_center" layout="block">
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-col slds-size_4-of-12 slds-text-align_center" id="productInfo">
+                <apex:outputPanel styleClass="slds-m-vertical_x-large" layout="block">
+                    <apex:outputText styleClass="slds-text-heading_medium" value="Product Information"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="slds-m-bottom_x-small" layout="block">
+                    <apex:outputText styleClass="slds-text-align_right slds-text-heading_small" value="Product Name: "/>
+                    <br/>
+                    <apex:outputText styleClass="slds-text-align_left slds-text-heading_small" value="{!product.Name}"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="slds-m-bottom_x-small" layout="block">
+                    <apex:outputText styleClass="slds-text-align_right slds-text-heading_small" value="Cost: "/>
+                    <br/>
+                    <apex:outputText styleClass="slds-text-align_left slds-text-heading_small"
+                                     value="{!product.Unit_Price__c} $"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="slds-m-bottom_x-small" layout="block">
+                    <apex:outputText styleClass="slds-text-align_right slds-text-heading_small"
+                                     value="Units Available: "/>
+                    <br/>
+                    <apex:outputText styleClass="slds-text-align_left slds-text-heading_small"
+                                     value="{!product.Units_Available__c} unit(s)"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="slds-m-bottom_x-small" layout="block" id="blockInput">
+                    <apex:outputText styleClass="slds-text-align_right slds-text-heading_small" value="Unit Count"/>
+                    <apex:input type="number" styleClass="slds-text-align_left slds-input" value="{!count}"
+                                onblur="multiply(this.value, {!product.Unit_Price__c})" id="input"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="slds-m-bottom_x-small" layout="block" id="totalBlock">
+                    <apex:outputText styleClass="slds-text-align_right slds-text-heading_small" value="Total Amount: "/>
+                    <br/>
+                    <apex:outputText styleClass="slds-text-align_left slds-text-heading_small" id="total"/>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-align_absolute-center" layout="block">
+                <apex:commandButton styleClass="slds-button slds-button_brand slds-m-top_medium" value="Buy"
+                                    action="{!buyProduct}"/>
+                <apex:commandButton styleClass="slds-button slds-button_brand slds-m-top_medium" value="Back"
+                                    action="{!back}"/>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+    <script>
+    function multiply(var1,var2){
+        $('[id $= total]').text(var1 * var2 + '.00 $');
+    }
+
+    </script>
+</apex:page>

@@ -1,0 +1,158 @@
+<!--
+ - Created by gbuklaga on 6/9/2019.
+ -->
+
+
+<apex:page id="ProductTable" standardController="Contact" extensions="ProductTable_Controller"  recordSetVar="contacts" showChat="false">
+    <apex:includeScript value="{!URLFOR($Resource.jQuery)}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jqueryTablesorter)}"/>
+    <style>
+
+  .productTable { cellspacing: 0px; cellpadding: 0px; border-collapse: collapse; }
+   #productTable tr:hover { background: #e3f3ff; cursor:pointer; }
+   #productTable th {
+     background:#f2f3f3; font-size:90%; padding:5px 2px 4px 5px; border: 1px solid #e0e3e5;
+  }
+  #productTable td { border-top: 1px solid #e0e3e5; border-bottom: 1px solid #e0e3e5; }
+  .left { text-align:left; margin-left:4px; }
+  .right { text-align:right; margin-right:4px; }
+  .leftborder { border-left: 1px solid #e0e3e5; }
+  .rightborder { border-right: 1px solid #e0e3e5; }
+  a.editLink { text-decoration:none; }
+  a.editLink:hover { text-decoration:underline; }
+  .productLink { color:#000000; }
+  .productLink:hover { color:#015ba7; }
+  .cmdBtn { padding:5px; }
+
+
+    </style>
+
+    <script language="JavaScript">
+
+  $j = jQuery.noConflict();
+  $j(document).ready(function() {
+       $j("#productTable").tablesorter();
+   });
+
+
+    </script>
+
+    <apex:pageMessages />
+
+    <apex:form >
+
+        <apex:outputPanel id="redirectPanel">
+            <apex:outputText rendered="{!shouldRedirect}">
+                <script type="text/javascript">
+         window.top.location.href = '{!redirectUrl}';
+
+                </script>
+            </apex:outputText>
+        </apex:outputPanel>
+
+        <div>
+            <table style="width:100%;">
+                <tr>
+                    <td style="width:30%;"></td>
+                    <td>
+                        <apex:commandButton style="margin:3px;" value="Edit All" action="{!editAll}"
+                                            rerender="redirectPanel" rendered="{! !noProducts}"/>
+                        <apex:commandButton style="margin:3px;" value="Delete Selected" action="{!deleteSelected}"
+                                            rerender="redirectPanel" rendered="{! !noProducts}"/>
+                        <apex:commandButton style="margin:3px;" value="Add Product" action="{!addProduct}"
+                                            rerender="redirectPanel"/>
+                        <apex:commandButton style="margin:3px;" value="Add Product Bundle"
+                                            action="{!addProductBundle}" rerender="redirectPanel"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <apex:outputPanel id="noProductsPanel" rendered="{!noProducts}">
+            <div style="width:100%;padding-top:10px;">
+                <table style="background:#f8f8f8;width:100%;" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                    <tr>
+                        <th style="border:1px solid #e0e3e5;padding:5px 5px 4px 5px;font-weight:normal;">
+                            No records to display
+                        </th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </apex:outputPanel>
+
+        <apex:outputPanel id="productPanel" rendered="{! !noProducts}">
+            <div id="tableDiv" style="overflow-y: auto; overflow-x: none;">
+                <table id="productTable">
+                    <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <apex:repeat value="{!products}" var="nextOLI">
+                        <tr>
+                            <td style="min-width:55px;">
+                                <apex:inputCheckbox value="{!nextOLI.checked}"/>&nbsp;|&nbsp;
+                                <apex:commandLink value="Edit" action="{!editOneProduct}" rerender="redirectPanel"
+                                                  style="color:#015ba7;" styleClass="editLink">
+                                    <apex:param name="editProductId" assignTo="{!editProductId}"
+                                                value="{!nextOLI.oli.Id}"/>
+                                </apex:commandLink>
+                            </td>
+                            <!--                                    <td>-->
+                            <!--                                          <apex:commandLink value="{!nextOLI.oli.PricebookEntry.LastName}" action="{!gotoLink}"-->
+                            <!--                                                                                           rerender="redirectPanel" styleClass="productLink" >-->
+                            <!--                                                <apex:param name="editProductId" assignTo="{!editProductId}"-->
+                            <!--                                                                                       value="{!nextOLI.oli.PricebookEntry.Product2Id}" />-->
+                            <!--                                              </apex:commandLink>-->
+                            <!--                                        </td>-->
+                            <td style="min-width:56px;">
+                                <apex:outputField value="{!nextOLI.oli.FirstName}"/>
+                            </td>
+                            <td style="min-width:92px;">
+                                <apex:outputField value="{!nextOLI.oli.LastName}"/>
+                            </td>
+                            <td style="min-width:92px;">
+                                <apex:outputField value="{!nextOLI.oli.Email}"/>
+                            </td>
+                            <td style="min-width:92px;">
+                                <apex:outputField value="{!nextOLI.oli.Phone}"/>
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                    </tbody>
+                </table>
+            </div>
+        </apex:outputPanel>
+
+        <table style="width:100%">
+            <td align="left">
+                <apex:outputText id="PageNumber">Page {! PageNumber }
+                    of {! CEILING(ResultSize/PageSize) }</apex:outputText>
+            </td>
+            <td align="center">
+                <apex:commandLink action="{! previous }" value="« Previous" rendered="{! hasPrevious }"/>
+                <apex:outputText style="color:#ccc" value="« Previous" rendered="{! NOT(hasPrevious) }"/>
+                &nbsp;
+                <apex:commandLink action="{! next }" value="Next »" rendered="{! hasNext }"/>
+                <apex:outputText style="color:#ccc" value="Next »" rendered="{! NOT(hasNext) }"/>
+            </td>
+            <td align="right">
+                Records per page:
+                <apex:selectList value="{! PageSize }" size="1">
+                    <apex:selectOption itemValue="5" itemLabel="5"/>
+                    <apex:selectOption itemValue="10" itemLabel="10"/>
+                    <apex:selectOption itemValue="20" itemLabel="20"/>
+                    <apex:actionSupport event="onchange" reRender="contacts_list, redirectPanel"/>
+                </apex:selectList>
+            </td>
+        </table>
+
+    </apex:form>
+</apex:page>

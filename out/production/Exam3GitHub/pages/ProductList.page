@@ -1,0 +1,36 @@
+<apex:page controller="ProductListController" lightningStylesheets="true">
+    <apex:slds />
+    <apex:form >
+        <apex:pageBlock title="Product List">
+            <apex:pageBlockTable styleClass="slds-table_cell-buffer" value="{!productList}" var="pl">
+                <apex:column headerValue="IMAGE" style="width:130px" headerClass="slds-text-heading_small">
+                    <apex:image styleClass="slds-p-right_large" value="{!pl.Image_Url__c}"/>
+                </apex:column>
+                <apex:column width="150px">
+                    <apex:outputLink styleClass="slds-text-link slds-text-heading_small"
+                                     value="/apex/Product?Id={!pl.Id}&returnPage=ProductList" >{!pl.Name}</apex:outputLink>
+                </apex:column>
+                <apex:column headerValue="TITLE" headerClass="slds-text-heading_small">
+                    <apex:outputText styleClass="slds-text-heading_small" value="{!pl.Title__c}&returnPage=ProductListPage"></apex:outputText>
+                </apex:column>
+                <apex:column headerValue="PRODUCT DESCRIPTION" headerClass="slds-text-heading_small">
+                    <apex:outputText styleClass="slds-text-heading_small"
+                                     value="{!pl.Product_Description__c}"></apex:outputText>
+                    <apex:outputLink styleClass="slds-text-link slds-text-heading_small"
+                                     value="/apex/Product?Id={!pl.Id}&returnPage=ProductList">
+                        Discription
+                    </apex:outputLink>
+                </apex:column>
+                <apex:column style="width:20px"/>
+                <apex:column headerValue="COST" style="width:90px" value="{!pl.Unit_Price__c}"
+                             headerClass="slds-text-heading_small"/>
+                <apex:column >
+                    <apex:outputLink styleClass="slds-button slds-button_brand slds-p-horizontal_medium"
+                                     value="/apex/BuyProduct?Id={!pl.Id}&returnPage=ProductList" >
+                        Buy
+                    </apex:outputLink>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

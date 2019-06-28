@@ -1,0 +1,59 @@
+<apex:page controller="ProductController" lightningStylesheets="true">
+    <apex:slds />
+    <apex:form >
+        <apex:outputPanel styleClass="slds-align_absolute-center slds-grid slds-wrap" layout="block">
+            <apex:outputPanel styleClass="slds-col slds-size_1-of-1 slds-text-align_center">
+                <apex:outputText styleClass="slds-text-heading_medium" value="{!product.Name}"/>
+                <br/>
+                <br/>
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-col slds-size_1-of-2 slds-text-align_center" layout="block">
+                <apex:image value="{!product.Image_Url__c}"/>
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-col slds-size_1-of-2 slds-text-align_left" layout="block">
+
+                <apex:outputPanel layout="block">
+                    <apex:outputText styleClass="slds-text-title" value="Amount"></apex:outputText>
+                    <br/>
+                    <apex:outputText styleClass="slds-text-heading_small"
+                                     value="{!product.Units_Available__c}"></apex:outputText>
+                    <br/>
+                    <br/>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block">
+                    <apex:outputText styleClass="slds-text-title" value="Cost"></apex:outputText>
+                    <br/>
+                    <apex:outputText styleClass="slds-text-heading_small"
+                                     value="{!product.Unit_Price__c} $"></apex:outputText>
+                    <br/>
+                    <br/>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block">
+                    <apex:outputText styleClass="slds-text-title" value="Title"></apex:outputText>
+                    <br/>
+                    <apex:outputText styleClass="slds-text-heading_small" value="{!product.Title__c}"></apex:outputText>
+                    <br/>
+                    <br/>
+                </apex:outputPanel>
+
+                <apex:outputPanel layout="block">
+                    <apex:outputText styleClass="slds-text-title" value="Description"></apex:outputText>
+                    <br/>
+                    <apex:outputText styleClass="slds-text-heading_small"
+                                     value="{!product.Product_Description__c}"></apex:outputText>
+                    <br/>
+                    <br/>
+                </apex:outputPanel>
+
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-align_absolute-center" layout="block">
+                <apex:outputLink styleClass="slds-button slds-button_brand"
+                                 value="/apex/BuyProduct?Id={!product.Id}&returnPage=Product">
+                    Buy
+                </apex:outputLink>
+                <apex:commandButton styleClass="slds-button slds-button_brand" value="Back"
+                                    action="{!back}"/>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>
